@@ -21,9 +21,17 @@
   <script>
     const npcs = [];
     
-    npcs.push(createNPC());
-    npcs.push(createNPC());
-    npcs.push(createNPC());
+    for(let i = 0; i<10; i++){
+      npcs.push(createNPC());
+    }
+
+    const npc = npcs[0];
+    console.log("npcs[0] has the following properties...");
+
+    for(let prop in npc){
+      console.log(prop + ":" + npc[prop]);
+    }
+
     
     function createNPC(){
       const weapons = ["sword", "pistol", "axe", "spear"];
