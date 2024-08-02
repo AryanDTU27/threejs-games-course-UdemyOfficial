@@ -28,6 +28,8 @@ class App{
 		const material = new THREE.MeshStandardMaterial(0xff0000);
 		this.mesh = new THREE.Mesh(geometry, material);
 		this.scene.add(this.mesh);
+
+		const controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 		       
         this.renderer.setAnimationLoop(this.render.bind(this));
     

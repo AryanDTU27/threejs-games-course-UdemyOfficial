@@ -25,8 +25,10 @@ class App{
 		container.appendChild( this.renderer.domElement );
 		
         //Replace Box with Circle, Cone, Cylinder, Dodecahedron, Icosahedron, Octahedron, Plane, Sphere, Tetrahedron, Torus or TorusKnot
-        const geometry = new THREE.BoxGeometry();
-        //const geometry = this.createStarGeometry();
+        // const geometry = new THREE.CircleGeometry(1, 32, 0, Math.PI);
+        // const geometry = this.createStarGeometry();
+        const geometry = this.createPolygonGeometry();
+
 
         const material = new THREE.MeshStandardMaterial( { color: 0xFF0000 });
 
@@ -42,7 +44,50 @@ class App{
 	}	
     
     createStarGeometry(innerRadius=0.4, outerRadius=0.8, points=5){
-        
+        const shape = new THREE.Shape();
+
+        const PI2 = Math.PI * 2;
+        const inc = PI2/(points*2);
+
+        let inner = true;
+
+        shape.moveTo(outerRadius, 0);
+
+        for(let theta = inc; theta < PI2; theta += inc){
+            const radius = (inner) ? innerRadius : outerRadius;
+            shape.lineTo(Math.cos(theta)*radius, Math.sin(theta)*radius);
+            inner = !inner;
+        }
+
+        const extrudeSettings = {
+            steps: 1,
+            depth: 0.1,
+            bevelEnabled: false
+        }
+
+        return new THREE.ExtrudeGeometry(shape, extrudeSettings);
+    }
+
+    createPolygonGeometry(outerRadius=0.8){
+        const shape = new THREE.Shape();
+
+        const PI2 = Math.PI * 2;
+        const inc = PI2/(6);
+
+        shape.moveTo(outerRadius, 0);
+
+        for(let theta = inc; theta < PI2; theta += inc){
+            const radius = outerRadius;
+            shape.lineTo(Math.cos(theta)*radius, Math.sin(theta)*radius);
+        }
+
+        const extrudeSettings = {
+            steps: 1,
+            depth: 0.1,
+            bevelEnabled: false
+        }
+
+        return new THREE.ExtrudeGeometry(shape, extrudeSettings);
     }
 
     resize(){
